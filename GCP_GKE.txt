@@ -1,0 +1,68 @@
+Notes
+===========
+quick summary of what I did today.
+
+reactivated old GCP account with payment info
+create a new project Universal Reviews Microservice (skilled-flight-435221-g8)
+installed gcloud cli in local system
+
+Run gcloud command from local intelliJ terminal
+=========================================
+(be sure to revoke access after work, we are opening **SECURITY GATES**)
+Open powershell in admin mode
+grant access: $ Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope CurrentUser
+revoke access: $ Set-ExecutionPolicy -ExecutionPolicy Restricted -Scope CurrentUser
+
+Basic gcloud and docker commands
+======================
+configure docker so that docker push command pushes to the right zone
+$ gcloud auth configure-docker us-central1-docker.pkg.dev
+
+push image to Artifact Registry from local
+===========================================
+$ docker build -t urev-users-ms-production-ar .
+$ docker tag urev-users-ms-production-ar:latest us-central1-docker.pkg.dev/skilled-flight-435221-g8/universal-reviews-users/urev-users-ms-production-ar:latest
+$ docker push us-central1-docker.pkg.dev/skilled-flight-435221-g8/universal-reviews-users/urev-users-ms-production-ar:latest
+
+
+
+
+Artifact Registry
+=================
+create a repository in GCP: Artifact Registry, namely universal-reviews-users
+
+Create a new Github reporsitory with Users microservice code.
+
+Cloud Build
+===========
+Connected my github account in GCP:Cloud Build:Repositories:Connect repository. This step needs authorization of github repo to GCP (UI Based instructions)
+
+Created a build trigger in GCP:Cloud Build:Triggers and provided codeBuild.yaml file location
+
+codeBuild.yaml is a file which contains steps for building the project and create artifacts. It also starts deployment after build phase.
+
+Execute and test yaml build steps from local
+$ gcloud builds submit --config cloudbuild.yaml
+
+Kubernetes Engine
+================= 
+
+create a new cluster:
+$ gcloud container clusters create-auto universal-reviews-cluster --location=us-central1
+
+prepare crednetials for kubectl commands:
+$ gcloud container clusters get-credentials universal-reviews-cluster --location us-central1
+
+Create Kubernetes cluster:
+$ kubectl create deployment universal-reviews-users --image=us-central1-docker.pkg.dev/skilled-flight-435221-g8/universal-reviews-users/urev-users-ms-production-ar:9217c74
+
+Expose service to ports:    
+$ kubectl expose deployment universal-reviews-users --type LoadBalancer --port 80 --target-port 8081
+
+Get deployment.yaml file:
+$ kubectl get deploy universal-reviews-users -o yaml
+
+Get service and check swagger
+$kubectl get service
+take external ip and open http://34.136.188.160/swagger-ui/index.html
+

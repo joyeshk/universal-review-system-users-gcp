@@ -1,0 +1,62 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    autopilot.gke.io/resource-adjustment: '{"input":{"containers":[{"name":"urev-users-ms-production-ar"}]},"output":{"containers":[{"limits":{"ephemeral-storage":"1Gi"},"requests":{"cpu":"500m","ephemeral-storage":"1Gi","memory":"2Gi"},"name":"urev-users-ms-production-ar"}]},"modified":true}'
+    autopilot.gke.io/warden-version: 3.0.31
+    deployment.kubernetes.io/revision: "1"
+  creationTimestamp: "2024-09-11T17:00:14Z"
+  generation: 1
+  labels:
+    app: universal-reviews-users
+  name: universal-reviews-users
+  namespace: default
+  resourceVersion: "26966"
+  uid: ee2c934a-21a3-488b-b18a-1ddff031a9d3
+spec:
+  progressDeadlineSeconds: 600
+  replicas: 2
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app: universal-reviews-users
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: universal-reviews-users
+    spec:
+      containers:
+        - image: INIT_IMAGE_NAME
+          imagePullPolicy: IfNotPresent
+          name: urev-users-ms-production-ar
+          resources:
+            limits:
+              ephemeral-storage: 1Gi
+            requests:
+              cpu: 500m
+              ephemeral-storage: 1Gi
+              memory: 2Gi
+          securityContext:
+            capabilities:
+              drop:
+                - NET_RAW
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext:
+        seccompProfile:
+          type: RuntimeDefault
+      terminationGracePeriodSeconds: 30
+      tolerations:
+        - effect: NoSchedule
+          key: kubernetes.io/arch
+          operator: Equal
+          value: amd64
