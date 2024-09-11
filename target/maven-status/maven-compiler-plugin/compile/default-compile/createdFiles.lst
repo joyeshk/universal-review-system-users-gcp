@@ -1,0 +1,12 @@
+com\jk\universalreview\users\config\SwaggerConfig.class
+com\jk\universalreview\users\AuthController.class
+com\jk\universalreview\users\GlobalExceptionHandler.class
+com\jk\universalreview\users\UsersController.class
+com\jk\universalreview\users\DTO\Reviews.class
+com\jk\universalreview\users\config\SecurityConfig.class
+com\jk\universalreview\users\User.class
+com\jk\universalreview\users\UsersApplication.class
+com\jk\universalreview\users\UserRepository.class
+com\jk\universalreview\users\emailChangeDTO.class
+com\jk\universalreview\users\UserService.class
+com\jk\universalreview\users\AuthResponse.class
