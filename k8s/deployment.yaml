@@ -2,17 +2,12 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   annotations:
-    autopilot.gke.io/resource-adjustment: '{"input":{"containers":[{"name":"urev-users-ms-production-ar"}]},"output":{"containers":[{"limits":{"ephemeral-storage":"1Gi"},"requests":{"cpu":"500m","ephemeral-storage":"1Gi","memory":"2Gi"},"name":"urev-users-ms-production-ar"}]},"modified":true}'
-    autopilot.gke.io/warden-version: 3.0.31
-    deployment.kubernetes.io/revision: "1"
-  creationTimestamp: "2024-09-11T17:00:14Z"
+    deployment.kubernetes.io/revision: "1"=
   generation: 1
   labels:
     app: universal-reviews-users
   name: universal-reviews-users
   namespace: default
-  resourceVersion: "26966"
-  uid: ee2c934a-21a3-488b-b18a-1ddff031a9d3
 spec:
   progressDeadlineSeconds: 600
   replicas: 2
